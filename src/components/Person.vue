@@ -6,11 +6,12 @@ const props = defineProps<TFriend>()
 
 <template>
 <div class="person">
+  <img class="person__avatar"
+       :src="props.avatar"
+       alt=""
+  />
   <div class="person__name">
     {{ props.name }}
-  </div>
-  <div class="person__avatar">
-    {{ props.avatar }}
   </div>
   {{props.id}}
 </div>
