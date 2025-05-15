@@ -32,3 +32,8 @@ export const friends: TFriend[] = [
         avatar: 'https://i.pravatar.cc/150?img=6',
     },
 ]
+
+export const relations = [
+    { from: 'id1', to: 'id2', type: 'друг' },
+    { from: 'id3', to: 'id4', type: 'влюблён' }
+];

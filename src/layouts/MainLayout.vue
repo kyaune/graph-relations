@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import Person from "@/components/Person.vue";
-import {friends} from "@/dummy/data.ts"
+import {friends, relations} from "@/dummy/data.ts"
+import {computed} from "vue";
 
 const getRotation = (index: number, total: number) => {
   const radius = 500;
@@ -16,11 +17,35 @@ const getRotation = (index: number, total: number) => {
     position: "absolute"
   }
 }
+
+const friendPositions = computed(() => {
+  const map = new Map();
+  friends.forEach((friend, index) => {
+    const angle = (index / friends.length) * 2 * Math.PI;
+    const x = 500 * Math.cos(angle);
+    const y = 500 * Math.sin(angle);
+    map.set(friend.id, { x: 500 + x, y: 500 + y });
+  });
+  return map;
+});
+
+const getFriendPosition = (id: string) => friendPositions.value.get(id);
 </script>
 
 <template>
 <div class="main-layout">
   <div class="main-layout__container">
+    <svg class="relations-lines" xmlns="http://www.w3.org/2000/svg">
+      <line
+          v-for="(relation, idx) in relations"
+          :key="idx"
+          :x1="getFriendPosition(relation.from).x"
+          :y1="getFriendPosition(relation.from).y"
+          :x2="getFriendPosition(relation.to).x"
+          :y2="getFriendPosition(relation.to).y"
+          stroke="black"
+      />
+    </svg>
     <div class="main-layout__persons-list">
       <div class="main-layout__person"
            v-for="(friend, index) in friends"
@@ -63,5 +88,14 @@ const getRotation = (index: number, total: number) => {
 .main-layout__person {
   position: absolute;
   left: 50%;
+}
+
+.relations-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 </style>
